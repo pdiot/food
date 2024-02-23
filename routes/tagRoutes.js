@@ -7,6 +7,7 @@ module.exports = router;
 
 const baseUrl = `/tags`;
 
+
 //Post Method
 router.post(`${baseUrl}`, async (req, res) => {
     const tag = new TagModel({
