@@ -11,7 +11,7 @@ interface IIngredientModel extends mongoose.Model<IIngredientDoc> {
     build(attrs: IIngredient): IIngredientDoc;
 }
 
-interface IIngredientDoc extends mongoose.Document {
+export interface IIngredientDoc extends mongoose.Document {
     label: string;
     unit: string;
     price: number;

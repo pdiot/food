@@ -9,7 +9,7 @@ interface ITagModel extends mongoose.Model<ITagDoc> {
     build(attrs: ITag): ITagDoc;
 }
 
-interface ITagDoc extends mongoose.Document {
+export interface ITagDoc extends mongoose.Document {
     label: string;
     color: string;
 }
