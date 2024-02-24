@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { baseApiUrl } from "..";
-import { ITag, Tag } from "../models/tag";
+import { ITag, Tag, TagPostBody } from "../models/tag";
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get('/tags', async (req: Request, res: Response) => {
 });
 
 router.post('/tags', async (req: Request, res: Response) => {
-    const { label, color } = req.body;
+    const { label, color } = req.body as TagPostBody;
     try {
         const tag = Tag.build({ label, color });
         await tag.save();
@@ -40,7 +40,7 @@ router.get('/tags/:id', async (req: Request, res: Response) => {
 
 router.patch('/tags/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { label, color } = req.body;
+    const { label, color } = req.body as Partial<TagPostBody>;
     try {
         const patchData: Partial<ITag> = {};
         if (label) {

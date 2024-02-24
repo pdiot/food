@@ -2,6 +2,14 @@ import mongoose from "mongoose";
 import { ITag, ITagDoc } from "./tag";
 import { IIngredient, IIngredientDoc } from "./ingredient";
 
+export type RecipePostBody = {
+    label: string,
+    description: string,
+    servings: number,
+    tagIds: string[],
+    ingredientIdsAssos: { ingredientId: string, quantity: number }[]
+};
+
 export interface IRecipe {
     label: string;
     description: string;

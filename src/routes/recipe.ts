@@ -1,5 +1,5 @@
 import express from "express";
-import { Recipe } from "../models/recipe";
+import { Recipe, RecipePostBody } from "../models/recipe";
 import { Tag } from "../models/tag";
 import { IIngredientDoc, Ingredient } from "../models/ingredient";
 
@@ -30,8 +30,9 @@ router.get('/recipes/:id', async (req, res) => {
     }
 });
 
+
 router.post('/recipes', async (req, res) => {
-    const { label, description, servings, tagIds, ingredientIdsAssos } = req.body;
+    const { label, description, servings, tagIds, ingredientIdsAssos } = req.body as RecipePostBody;
     try {
         const tags = await Tag.find({ _id: { $in: tagIds } });
 
@@ -71,7 +72,7 @@ router.post('/recipes', async (req, res) => {
 });
 
 router.patch('/recipes/:id', async (req, res) => {
-    const { label, description, servings, tagIds, ingredientIdsAssos } = req.body;
+    const { label, description, servings, tagIds, ingredientIdsAssos } = req.body as Partial<RecipePostBody>;
     try {
         const recipe = await Recipe.findById(req.params.id);
         if (!recipe) {

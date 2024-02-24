@@ -1,5 +1,5 @@
 import express from "express";
-import { IIngredient, Ingredient } from "../models/ingredient";
+import { IIngredient, Ingredient, IngredientPostBody } from "../models/ingredient";
 
 const router = express.Router();
 
@@ -11,9 +11,8 @@ router.get('/ingredients', async (req, res) => {
         return res.status(500).send(error.message);
     }
 });
-
 router.post('/ingredients', async (req, res) => {
-    const { label, unit, price, calories } = req.body;
+    const { label, unit, price, calories } = req.body as IngredientPostBody;
     try {
         const ingredient = Ingredient.build({ label, unit, price, calories });
         await ingredient.save();
@@ -39,7 +38,7 @@ router.get('/ingredients/:id', async (req, res) => {
 
 router.patch('/ingredients/:id', async (req, res) => {
     const { id } = req.params;
-    const { label, unit, price, calories } = req.body;
+    const { label, unit, price, calories } = req.body as Partial<IngredientPostBody>;
     try {
         const patchData: Partial<IIngredient> = {};
         if (label) {

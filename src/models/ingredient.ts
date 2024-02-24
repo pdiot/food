@@ -1,10 +1,17 @@
 import mongoose from "mongoose";
 
+export type IngredientPostBody = {
+    label: string;
+    unit: string;
+    price?: number;
+    calories?: number;
+};
+
 export interface IIngredient {
     label: string;
     unit: string;
-    price: number;
-    calories: number;
+    price?: number;
+    calories?: number;
 }
 
 interface IIngredientModel extends mongoose.Model<IIngredientDoc> {

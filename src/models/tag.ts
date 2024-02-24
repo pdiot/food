@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 
+export type TagPostBody = {
+    label: string;
+    color: string;
+};
+
 export interface ITag {
     label: string;
     color: string;
