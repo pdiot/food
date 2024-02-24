@@ -1,6 +1,6 @@
 import express from "express";
 import { Recipe, RecipePostBody } from "../models/recipe";
-import { Tag } from "../models/tag";
+import { ITagDoc, Tag } from "../models/tag";
 import { IIngredientDoc, Ingredient } from "../models/ingredient";
 
 const router = express.Router();
@@ -9,7 +9,8 @@ router.get('/recipes', async (req, res) => {
     try {
         const recipes = await Recipe.find({})
             .populate('tags')
-            .populate('ingredients');
+            .populate('ingredients.ingredient')
+            .exec();
         return res.send(recipes);
     } catch (error: any) {
         return res.status(500).send(error.message);
@@ -20,7 +21,8 @@ router.get('/recipes/:id', async (req, res) => {
     try {
         const recipe = await Recipe.findById(req.params.id)
             .populate('tags')
-            .populate('ingredients');
+            .populate('ingredients.ingredient')
+            .exec();
         if (!recipe) {
             return res.status(404).send('Recipe not found');
         }
@@ -63,7 +65,7 @@ router.post('/recipes', async (req, res) => {
             (await
                 (await recipe.save())
                     .populate('tags'))
-                .populate('ingredients')
+                .populate('ingredients.ingredient')
         );
         return res.status(201).send(recipe);
     } catch (error: any) {
@@ -89,8 +91,11 @@ router.patch('/recipes/:id', async (req, res) => {
             recipe.servings = servings;
         }
         if (tagIds) {
-            const tags = await Tag.find({ _id: { $in: tagIds } });
-            recipe.tags = tags;
+
+            const tags = await Promise.all(tagIds.map(async (tagId) => Tag.findById(tagId)));
+            if (tags) {
+                recipe.tags = tags as ITagDoc[];
+            }
         }
         if (ingredientIdsAssos) {
             const ingredientAssos: { quantity: number, ingredient: IIngredientDoc }[] = await Promise.all(ingredientIdsAssos.map(async (ingredientAsso: { ingredientId: string, quantity: number }) => {
@@ -104,9 +109,25 @@ router.patch('/recipes/:id', async (req, res) => {
             recipe.ingredients = ingredientAssos;
         }
 
-        const updated = await (await (await recipe.save()).populate('tags')).populate('ingredients');
+        const updated = await (await (await recipe.save()).populate('tags')).populate('ingredients.ingredient');
         return res.status(200).send(updated);
     } catch (error: any) {
+        return res.status(500).send(error.message);
+    }
+});
+
+
+router.delete('/recipes/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const recipe = await Recipe.findById(id);
+        if (!recipe) {
+            return res.status(404).send('Recipe not found');
+        }
+        Recipe.findByIdAndDelete(id);
+        return res.status(200).send({ response: 'Recipe deleted' });
+    }
+    catch (error: any) {
         return res.status(500).send(error.message);
     }
 });

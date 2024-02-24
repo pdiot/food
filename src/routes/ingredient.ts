@@ -68,11 +68,11 @@ router.patch('/ingredients/:id', async (req, res) => {
 router.delete('/ingredients/:id', async (req, res) => {
     const { id } = req.params;
     try {
-        const ingredient = await Ingredient.findByIdAndDelete(id);
+        const ingredient = await Ingredient.findById(id);
         if (!ingredient) {
             return res.status(404).send('Ingredient not found');
         }
-        Ingredient.findByIdAndDelete(id);
+        await Ingredient.findByIdAndDelete(id);
         return res.status(200).send({ response: 'Ingredient deleted' });
     }
     catch (error: any) {
