@@ -65,7 +65,7 @@ router.delete('/tags/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
         await Tag.findByIdAndDelete(id);
-        return res.status(200).send('Tag deleted');
+        return res.status(200).send({ response: 'Tag deleted' });
     }
     catch (error: any) {
         return res.status(500).send(error.message);

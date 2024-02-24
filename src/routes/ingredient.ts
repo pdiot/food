@@ -73,7 +73,8 @@ router.delete('/ingredients/:id', async (req, res) => {
         if (!ingredient) {
             return res.status(404).send('Ingredient not found');
         }
-        return res.status(200).send(ingredient);
+        Ingredient.findByIdAndDelete(id);
+        return res.status(200).send({ response: 'Ingredient deleted' });
     }
     catch (error: any) {
         return res.status(500).send(error.message);
