@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-interface ITag {
+export interface ITag {
     label: string;
     color: string;
 }
@@ -26,6 +26,7 @@ const tagSchema = new mongoose.Schema({
     }
 });
 
+// Bien faire attention à définir le contenu de statics avant de créer le model
 tagSchema.statics.build = (attrs: ITag) => {
     return new Tag(attrs);
 };
