@@ -124,7 +124,7 @@ router.delete('/recipes/:id', async (req, res) => {
         if (!recipe) {
             return res.status(404).send('Recipe not found');
         }
-        Recipe.findByIdAndDelete(id);
+        await Recipe.findByIdAndDelete(id);
         return res.status(200).send({ response: 'Recipe deleted' });
     }
     catch (error: any) {
