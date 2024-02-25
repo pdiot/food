@@ -4,6 +4,7 @@ import { tagRouter } from './routes/tag';
 import mongoose from 'mongoose';
 import { ingredientRouter } from './routes/ingredient';
 import { recipeRouter } from './routes/recipe';
+import { plannerRouter } from './routes/planner';
 var cors = require('cors');
 
 export const baseApiUrl = '/api';
@@ -15,6 +16,7 @@ app.use(json());
 app.use('/api', tagRouter);
 app.use('/api', ingredientRouter);
 app.use('/api', recipeRouter);
+app.use('/api', plannerRouter);
 
 mongoose.connect('mongodb+srv://food:food@cluster0.n2x7rui.mongodb.net/').then(() => { console.log('connected to database') });;
 

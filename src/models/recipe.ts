@@ -22,7 +22,7 @@ interface IRecipeModel extends mongoose.Model<IRecipeDoc> {
     build(attrs: IRecipe): IRecipeDoc;
 }
 
-interface IRecipeDoc extends mongoose.Document {
+export interface IRecipeDoc extends mongoose.Document {
     label: string;
     description: string;
     servings: number;
