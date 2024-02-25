@@ -17,6 +17,20 @@ router.get('/recipes', async (req, res) => {
     }
 });
 
+router.get('/recipes/search', async (req, res) => {
+    try {
+        const { searchTerm } = req.query as { searchTerm: string };
+        const recipes = await Recipe.find({}).populate('tags').populate('ingredients.ingredient').exec();
+        // Filtre des recettes à la main, parce que mongoose ne permet pas de filter le parent en fonction du child
+        const filteredRecipes = recipes.filter((recipe) => {
+            return recipe.label.includes(searchTerm) || recipe.description.includes(searchTerm) || recipe.tags.some((tag) => tag.label.includes(searchTerm)) || recipe.ingredients.some((ingredientAsso) => ingredientAsso.ingredient.label.includes(searchTerm));
+        });
+        return res.send(filteredRecipes);
+    } catch (error: any) {
+        return res.status(500).send(error.message);
+    }
+});
+
 router.get('/recipes/:id', async (req, res) => {
     try {
         const recipe = await Recipe.findById(req.params.id)

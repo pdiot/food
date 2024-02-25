@@ -9,7 +9,7 @@ var cors = require('cors');
 export const baseApiUrl = '/api';
 
 const app = express();
-app.use(cors())
+app.use(cors());
 app.use(json());
 
 app.use('/api', tagRouter);
