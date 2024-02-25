@@ -72,7 +72,7 @@ router.post('/planner/print', async (req, res) => {
         const shoppingList = buildShoppingList(ingredients);
         console.log('shoppingList', shoppingList);
 
-        return res.status(200).send(JSON.stringify(reminder + shoppingList));
+        return res.status(200).send(JSON.stringify(reminder + '\n' + shoppingList));
 
     }
     catch (error: any) {
